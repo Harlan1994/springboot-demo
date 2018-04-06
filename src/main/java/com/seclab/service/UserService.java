@@ -4,12 +4,11 @@ import com.seclab.annotation.DataSource;
 import com.seclab.domain.User;
 import com.seclab.domain.datasource.CustomContextHolder;
 import com.seclab.mapper.UserMapper;
-import com.seclab.utils.RedisUtil;
+import com.seclab.security.SimpleAuthenticationProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -19,12 +18,10 @@ import java.util.List;
  * Description:
  */
 @Service
-public class UserService {
+public class UserService implements IUserService {
 
     @Autowired
     private UserMapper userMapper;
-
-//    RedisUtil redisUtil = RedisUtil.getInstance();
 
     @DataSource(CustomContextHolder.DATA_SOURCE_MASTER)
     public void delete(Long id) {
@@ -32,14 +29,46 @@ public class UserService {
     }
 
     @DataSource(CustomContextHolder.DATA_SOURCE_MASTER)
-    @Cacheable(value = "users", keyGenerator = "keyGenerator")
-    public List<User> getAll() {
-        return userMapper.getAll();
+    @Cacheable(value = "user", keyGenerator = "keyGenerator")
+    @Override
+    public User findById(Long id) {
+        return userMapper.findById(id);
+    }
+
+    @DataSource(CustomContextHolder.DATA_SOURCE_SLAVER)
+    @Cacheable(value = "user", keyGenerator = "keyGenerator")
+    @Override
+    public User findUserByUsername(String username) {
+        return userMapper.findByUsername(username);
     }
 
     @DataSource(CustomContextHolder.DATA_SOURCE_MASTER)
-    @Cacheable(value = "user", keyGenerator = "keyGenerator")
-    public User getUser(Long id) {
-        return userMapper.findById(id);
+    @Cacheable(value = "users", keyGenerator = "keyGenerator")
+    @Override
+    public Page<User> findByPage(Integer page, Integer size) {
+        return null;
+    }
+
+    @Override
+    public void update(User User) {
+
+    }
+
+    @Override
+    public void deleteById(Long id) {
+
+    }
+
+    @Autowired
+    private SimpleAuthenticationProvider simpleAuthenticationProvider;
+
+    @Override
+    public User login(User user) {
+        return null;
+    }
+
+    @Override
+    public boolean logout() {
+        return false;
     }
 }

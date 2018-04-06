@@ -5,13 +5,6 @@ import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
-/**
- * Created with IntelliJ IDEA.
- * User: harlan
- * Date: 2018/4/4
- * Time: 16:40
- * Description:
- */
 @Mapper
 public interface UserMapper {
 
@@ -26,4 +19,7 @@ public interface UserMapper {
 
     @Select("select * from tb_user")
     List<User> getAll();
+
+    @Select("select * from tb_user where username=#{username}")
+    User findByUsername(@Param("username") String username);
 }

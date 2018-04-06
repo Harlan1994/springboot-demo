@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 /**
  * Created with IntelliJ IDEA.
@@ -13,16 +14,14 @@ import org.springframework.web.bind.annotation.RestController;
  * Time: 11:37
  * Description:
  */
-@RestController
+@Controller
 public class IndexController {
 
     @Autowired
     UserService userService;
 
     @GetMapping("/")
-    public String index() {
-        return "Hello world!";
+    public String index(ModelAndView modelAndView) {
+        return "index";
     }
-
-
 }

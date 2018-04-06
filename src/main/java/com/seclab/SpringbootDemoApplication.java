@@ -1,11 +1,9 @@
 package com.seclab;
 
-import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
-import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.context.annotation.Import;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
@@ -16,11 +14,8 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
  */
 @SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
 @EnableTransactionManagement(order = 2) // 设置事务执行顺序(需要在切换数据源之后，否则只走默认库)
-//@MapperScan("com.seclab.mapper")
 //@EnableAutoConfiguration
 @EnableWebMvc
-//@EnableCaching
-
 public class SpringbootDemoApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(SpringbootDemoApplication.class, args);
