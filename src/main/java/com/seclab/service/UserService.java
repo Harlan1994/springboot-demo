@@ -1,10 +1,12 @@
 package com.seclab.service;
 
 import com.seclab.annotation.DataSource;
-import com.seclab.datasource.CustomContextHolder;
 import com.seclab.domain.User;
+import com.seclab.domain.datasource.CustomContextHolder;
 import com.seclab.mapper.UserMapper;
+import com.seclab.utils.RedisUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,15 +22,24 @@ import java.util.List;
 public class UserService {
 
     @Autowired
-    UserMapper userMapper;
+    private UserMapper userMapper;
+
+//    RedisUtil redisUtil = RedisUtil.getInstance();
 
     @DataSource(CustomContextHolder.DATA_SOURCE_MASTER)
     public void delete(Long id) {
         userMapper.deleteById(id);
     }
 
-    @DataSource(CustomContextHolder.DATA_SOURCE_SLAVER)
+    @DataSource(CustomContextHolder.DATA_SOURCE_MASTER)
+    @Cacheable(value = "users", keyGenerator = "keyGenerator")
     public List<User> getAll() {
         return userMapper.getAll();
+    }
+
+    @DataSource(CustomContextHolder.DATA_SOURCE_MASTER)
+    @Cacheable(value = "user", keyGenerator = "keyGenerator")
+    public User getUser(Long id) {
+        return userMapper.findById(id);
     }
 }

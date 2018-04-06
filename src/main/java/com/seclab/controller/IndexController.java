@@ -1,13 +1,10 @@
 package com.seclab.controller;
 
-import com.seclab.domain.User;
 import com.seclab.service.UserService;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * Created with IntelliJ IDEA.
@@ -16,20 +13,16 @@ import java.util.List;
  * Time: 11:37
  * Description:
  */
-@Controller
+@RestController
 public class IndexController {
 
     @Autowired
     UserService userService;
 
-    @RequestMapping("/user")
-    public @ResponseBody List<User> index() {
-        List<User> users = userService.getAll();
-        return users;
+    @GetMapping("/")
+    public String index() {
+        return "Hello world!";
     }
 
-//    @DeleteMapping("/user/{id}")
-//    public void delete(@Param("id") Long id) {
-//        userService.delete(id);
-//    }
+
 }

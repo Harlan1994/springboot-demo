@@ -1,7 +1,7 @@
 package com.seclab.config;
 
-import com.seclab.datasource.CustomContextHolder;
-import com.seclab.datasource.DynamicDataSource;
+import com.seclab.domain.datasource.CustomContextHolder;
+import com.seclab.domain.datasource.DynamicDataSource;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.springframework.beans.factory.annotation.Qualifier;

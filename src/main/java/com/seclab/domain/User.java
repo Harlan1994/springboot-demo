@@ -2,6 +2,8 @@ package com.seclab.domain;
 
 import lombok.Data;
 
+import java.io.Serializable;
+
 /**
  * Created with IntelliJ IDEA.
  * User: harlan
@@ -10,7 +12,7 @@ import lombok.Data;
  * Description:
  */
 @Data
-public class User {
+public class User implements Serializable {
     private Long id;
     private String username;
 }

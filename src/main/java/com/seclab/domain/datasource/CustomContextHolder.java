@@ -1,4 +1,4 @@
-package com.seclab.datasource;
+package com.seclab.domain.datasource;
 
 /**
  * Created with IntelliJ IDEA.

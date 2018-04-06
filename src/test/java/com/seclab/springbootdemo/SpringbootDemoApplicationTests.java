@@ -1,5 +1,6 @@
 package com.seclab.springbootdemo;
 
+import com.seclab.utils.RedisUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -9,8 +10,15 @@ import org.springframework.test.context.junit4.SpringRunner;
 @SpringBootTest
 public class SpringbootDemoApplicationTests {
 
-	@Test
-	public void contextLoads() {
-	}
+    RedisUtil redisUtil = RedisUtil.getInstance();
 
+    @Test
+    public void contextLoads() {
+    }
+
+    @Test
+    public void stringTest() {
+//        redisUtil.saveString("hello", "redis");
+//        System.out.println("useRedisDao = " + redisUtil.getString("hello"));
+    }
 }
