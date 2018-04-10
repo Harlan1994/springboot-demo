@@ -41,7 +41,7 @@ public class UserService implements IUserService {
     @Autowired
     RedisTemplate<String, Object> redisTemplate;
 
-//    @DataSource(CustomContextHolder.DATA_SOURCE_SLAVER)
+    @DataSource(CustomContextHolder.DATA_SOURCE_SLAVER)
     @Override
     public Integer insertUser(User user) {
         return userMapper.insertUser(user);
@@ -56,7 +56,7 @@ public class UserService implements IUserService {
         return user;
     }
 
-//    @DataSource(CustomContextHolder.DATA_SOURCE_SLAVER)
+    @DataSource(CustomContextHolder.DATA_SOURCE_SLAVER)
     @Cacheable(value = "user", keyGenerator = "keyGenerator")
     @Override
     public User selectUserByUsername(String username) {

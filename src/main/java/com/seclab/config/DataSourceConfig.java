@@ -1,9 +1,9 @@
 package com.seclab.config;
 
+import com.seclab.config.druid.AbstractDruidDBConfig;
 import com.seclab.datasource.CustomContextHolder;
 import com.seclab.datasource.DynamicDataSource;
 import org.apache.ibatis.session.SqlSessionFactory;
-import org.mybatis.spring.SqlSessionFactoryBean;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -11,7 +11,6 @@ import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
-import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 
 import javax.sql.DataSource;
@@ -26,7 +25,25 @@ import java.util.Map;
  * Description:
  */
 @Configuration
-public class DataSourceConfig {
+public class DataSourceConfig extends AbstractDruidDBConfig {
+
+    @Value("${spring.datasource.master.jdbcUrl}")
+    private String masterUrl;
+
+    @Value("${spring.datasource.master.username}")
+    private String masterUsername;
+
+    @Value("${spring.datasource.master.password}")
+    private String masterPassword;
+
+    @Value("${spring.datasource.slaver.jdbcUrl}")
+    private String slaverUrl;
+
+    @Value("${spring.datasource.slaver.username}")
+    private String slaverUsername;
+
+    @Value("${spring.datasource.slaver.password}")
+    private String slaverPassword;
 
     /**
      * @return
@@ -36,13 +53,13 @@ public class DataSourceConfig {
     @Bean("masterDataSource")
     @ConfigurationProperties(prefix = "spring.datasource.master")
     public DataSource masterDataSource() throws Exception {
-        return DataSourceBuilder.create().build();
+        return super.createDataSource(masterUrl, masterUsername, masterPassword);
     }
 
     @Bean("slaverDataSource")
     @ConfigurationProperties(prefix = "spring.datasource.slaver")
     public DataSource slaverDataSource() throws Exception {
-        return DataSourceBuilder.create().build();
+        return super.createDataSource(slaverUrl, slaverUsername, slaverPassword);
     }
 
     /**
@@ -70,13 +87,7 @@ public class DataSourceConfig {
     public SqlSessionFactory sqlSessionFactory(@Qualifier("dynamicDataSource") DynamicDataSource dynamicDataSource,
                                                @Value("${mybatis.typeAliasesPackage}") String typeAliasesPackage,
                                                @Value("${mybatis.mapperLocations}") String mapperLocations) throws Exception {
-        SqlSessionFactoryBean factoryBean = new SqlSessionFactoryBean();
-        factoryBean.setDataSource(dynamicDataSource);
-        // 下边两句仅仅用于*.xml文件，如果整个持久层操作不需要使用到xml文件的话（只用注解就可以搞定），则不加
-        factoryBean.setTypeAliasesPackage(typeAliasesPackage);
-        factoryBean.setMapperLocations(new PathMatchingResourcePatternResolver().getResources(mapperLocations));//
-
-        return factoryBean.getObject();
+        return super.sqlSessionFactory(dynamicDataSource, mapperLocations, typeAliasesPackage);
     }
 
     /**
