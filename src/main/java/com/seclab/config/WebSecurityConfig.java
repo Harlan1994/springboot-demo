@@ -2,6 +2,7 @@ package com.seclab.config;
 
 import com.seclab.security.SimpleAuthenticationProvider;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -20,12 +21,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public void configAuthentication(AuthenticationManagerBuilder auth) throws Exception {
     }
 
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
-
+        http.csrf().disable()
+                .authorizeRequests()
+                .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .antMatchers(
+                        HttpMethod.GET,
                         StaticParams.PathRegex.INDEX,
                         StaticParams.PathRegex.INTRODUCTION,
                         StaticParams.PathRegex.LOGIN,
@@ -33,18 +35,21 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         StaticParams.PathRegex.NEWS,
                         StaticParams.PathRegex.QUESTIONS,
                         StaticParams.PathRegex.RANK,
-                        StaticParams.PathRegex.CSS,
+                        StaticParams.PathRegex.AUTH_USER,
                         StaticParams.PathRegex.JS,
+                        StaticParams.PathRegex.CSS,
                         StaticParams.PathRegex.IMG,
                         StaticParams.PathRegex.WEBJARS,
                         StaticParams.PathRegex.AUTH_USER
                 ).permitAll()  //无需访问权限
+                .antMatchers(HttpMethod.POST,
+                        StaticParams.PathRegex.AUTH_USER).permitAll()
 
                 .antMatchers(StaticParams.PathRegex.AUTH_ADMIN)
                 .hasAuthority(StaticParams.UserRole.ROLE_ADMIN) //admin角色访问权限
 
-//                .antMatchers(StaticParams.PathRegex.AUTH_USER)
-//                .hasAnyAuthority(StaticParams.UserRole.ROLE_USER, StaticParams.UserRole.ROLE_ADMIN)  //user角色访问权限
+                .antMatchers(StaticParams.PathRegex.AUTH_USER)
+                .hasAnyAuthority(StaticParams.UserRole.ROLE_USER, StaticParams.UserRole.ROLE_ADMIN)  //user角色访问权限
 
                 .anyRequest()//all others request authentication
                 .authenticated()

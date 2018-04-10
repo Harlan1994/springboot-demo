@@ -1,7 +1,7 @@
 package com.seclab.aspect;
 
 import com.seclab.annotation.DataSource;
-import com.seclab.domain.datasource.CustomContextHolder;
+import com.seclab.datasource.CustomContextHolder;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Aspect;

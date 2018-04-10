@@ -9,7 +9,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
+import java.util.Set;
 
 @Component
 public class SimpleUserDetailsService implements UserDetailsService {
@@ -22,7 +22,7 @@ public class SimpleUserDetailsService implements UserDetailsService {
         User user;
 
         try {
-            user = userService.findUserByUsername(username);
+            user = userService.selectUserByUsername(username);
         } catch (Exception e) {
             throw new UsernameNotFoundException("Failed to find user " + username + ".");
         }
@@ -31,7 +31,7 @@ public class SimpleUserDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException("User " + username + " not found.");
         } else {
             try {
-                List<Role> roles = user.getRoles();
+                Set<Role> roles = user.getRoles();
                 user.setRoles(roles);
                 return user;
             } catch (Exception e) {

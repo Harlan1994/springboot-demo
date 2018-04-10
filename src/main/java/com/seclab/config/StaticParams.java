@@ -2,6 +2,11 @@ package com.seclab.config;
 
 public class StaticParams {
 
+    public static class Constants{
+        // 缓存单个用户数据前缀，为了避免重复key，后面需要加上用户的id和username，例如id=1，username=harlan==>"key:user:info:harlan:1"
+        public static final String KEY_USER_INFO_PREFIX = "key:user:info:";
+    }
+
     public static class PathRegex {
         // 首页以及css、js、img等静态资源访问无需权限
 //        public static final String ROOT = "/";

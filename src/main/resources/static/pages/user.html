@@ -1,0 +1,42 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta content="text/html;charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+</head>
+<body>
+<h1>user</h1>
+<div id="form-div">
+    <form id="insert-user-form" action="##" method="post">
+        <p>用户名：<input name="username" type="text" id="inputUsername" tabindex="1" size="15" value=""/></p>
+        <p>密　码：<input name="password" type="password" id="inputPassword" tabindex="2" size="16" value=""/></p>
+        <p>姓  名：<input name="realName" type="text" id="inputRealName" tabindex="1" size="15" value=""/></p>
+        <p>生  日：<input name="birthday" type="text" id="inputBirthday" tabindex="2" size="16" value=""/></p>
+        <p><input type="button" value="登录" onclick="insert()">&nbsp;<input type="reset" value="重置"></p>
+    </form>
+</div>
+<script src="../js/jquery.min.js" type="text/javascript"></script>
+<script src="../js/bootstrap.min.js" type="text/javascript"></script>
+<script>
+    function insert() {
+        $.ajax({
+            type: 'post',
+            url: "/user",
+            contentType: "application/json",
+            processData: false,
+            dataType: 'json',
+            traditional : true,
+            async : false,
+            data: JSON.stringify({ 'username': 'usernamevalue1', 'password': 'passwordvalue', 'realName': 'realNamevalue', 'birthday': '19930202' }),
+            success: function (data) {
+                alert("success");
+                console.log(data);
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("出现异常，异常信息：" + textStatus, " error");
+            }
+        })
+    }
+</script>
+</body>
+</html>

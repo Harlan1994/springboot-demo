@@ -1,6 +1,7 @@
 package com.seclab.utils;
 
 import com.seclab.domain.Result;
+import com.seclab.domain.ResultEnum;
 
 /**
  * Created with IntelliJ IDEA.
@@ -45,6 +46,18 @@ public class ResultUtil {
         Result result = new Result();
         result.setCode(code);
         result.setMessage(message);
+        return result;
+    }
+
+    /**
+     * 直接通过枚举产生错误的结果
+     * @param resultEnum
+     * @return
+     */
+    public static Result error(ResultEnum resultEnum){
+        Result result = new Result();
+        result.setCode(resultEnum.getCode());
+        result.setMessage(resultEnum.getMessage());
         return result;
     }
 }

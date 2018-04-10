@@ -10,7 +10,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.io.Serializable;
 import java.util.Collection;
-import java.util.List;
+import java.util.Date;
+import java.util.Set;
 
 /**
  * Created by Harlan1994 on 2017/11/20.
@@ -24,8 +25,11 @@ public class User implements Serializable, UserDetails {
     private String username;
     @JsonIgnore
     private String password;
-    private List<Role> roles;
-    private UserInfo userInfo;
+    private boolean locked; // 用户是否被锁定，即账户不可用
+    private String realName;
+    private String avatar;
+    private String birthday;
+    private Set<Role> roles;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -40,6 +44,7 @@ public class User implements Serializable, UserDetails {
         return AuthorityUtils.commaSeparatedStringToAuthorityList(authorities);
     }
 
+    // 用户是否过期，这里不考虑过期的问题
     @Override
     public boolean isAccountNonExpired() {
         return true;
@@ -47,14 +52,16 @@ public class User implements Serializable, UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return userInfo.isLocked();
+        return locked;
     }
 
+    // 用户授权是否过期，这里不考虑
     @Override
     public boolean isCredentialsNonExpired() {
         return true;
     }
 
+    // 是否开启，这里也不考虑
     @Override
     public boolean isEnabled() {
         return true;

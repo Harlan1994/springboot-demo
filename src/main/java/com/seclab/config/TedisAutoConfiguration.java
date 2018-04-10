@@ -84,7 +84,7 @@ public class TedisAutoConfiguration extends CachingConfigurerSupport {
     @Override
     public KeyGenerator keyGenerator() {
         return (o, method, objects) -> {
-            StringBuilder sb = new StringBuilder(32);
+            StringBuilder sb = new StringBuilder();
             sb.append(o.getClass().getSimpleName());
             sb.append(".");
             sb.append(method.getName());

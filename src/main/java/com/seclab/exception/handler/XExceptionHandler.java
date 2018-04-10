@@ -1,7 +1,9 @@
 package com.seclab.exception.handler;
 
 import com.seclab.domain.Result;
+import com.seclab.domain.ResultEnum;
 import com.seclab.exception.LoginException;
+import com.seclab.exception.UserNotFoundException;
 import com.seclab.utils.ResultUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,9 +29,13 @@ public class XExceptionHandler {
         if (e instanceof LoginException) {
             LoginException loginException = (LoginException) e;
             return ResultUtil.error(loginException.getCode(), loginException.getMessage());
+        } else if (e instanceof UserNotFoundException) {
+            UserNotFoundException userNotFoundException = (UserNotFoundException)e;
+            logger.error("No such user: " + userNotFoundException.getUsername(), e);
+            return ResultUtil.error(userNotFoundException.getCode(), userNotFoundException.getMessage());
         } else {
             logger.error("Unknown error occurred: {}", e);
-            return ResultUtil.error(-1, "Unknown error.");
+            return ResultUtil.error(ResultEnum.UNKONW_ERROR);
         }
     }
 }

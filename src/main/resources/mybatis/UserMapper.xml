@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.seclab.mapper.UserMapper">
+
+    <!--insertUser, 插入一个用户的信息，以下是对应的insert-->
+    <insert id="insertUser" parameterType="com.seclab.domain.User">
+        insert into
+          tb_user(username, password, avatar, birthday, locked, real_name)
+        values
+          (#{username}, #{password}, #{avatar}, #{birthday}, #{locked}, #{realName})
+    </insert>
+
+    <!--insertUsers, 插入多个用户的信息，以下是对应的insert-->
+    <insert id="insertUsers" parameterType="java.util.List">
+        insert into
+          tb_user(username, password, avatar, birthday, locked, real_name)
+        values
+          <foreach collection="list" item="item" index="index" separator=",">
+              (#{item.username, jdbcType=BIGINT},
+              #{item.password, jdbcType=VARCHAR},
+              #{item.avatar, jdbcType=VARCHAR},
+              #{item.birthday, jdbcType=DATETIME},
+              #{item.locked, jdbcType=BIT},
+              #{item.realName, jdbcType=VARCHAR})
+          </foreach>
+    </insert>
+
+    <!--selectUserByUsername, 通过用户名查询用户的详细信息，以下是对应的resultMap和select-->
+    <resultMap id="selectUserByUsernameResultMap" type="user">
+        <id column="id" property="id"/>
+        <result column="id" property="id"/>
+        <result column="username" property="username"/>
+        <result column="avatar" property="avatar"/>
+        <result column="locked" property="locked"/>
+        <result column="birthday" property="birthday"/>
+        <result column="real_name" property="realName"/>
+        <collection property="roles" ofType="com.seclab.domain.Role">
+            <result column="id" property="id"/>
+            <result column="role_name" property="roleName"/>
+        </collection>
+    </resultMap>
+
+    <select id="selectUserByUsername" resultMap="selectUserByUsernameResultMap">
+        select a.id,a.username,a.password,a.locked,a.real_name,a.avatar,a.birthday,
+          b.role_id,
+          c.role_name
+        from tb_user a
+        left outer join tb_user_role b on a.id=b.user_id
+        left outer join tb_role c on b.role_id=c.id
+        where a.username=#{username}
+    </select>
+</mapper>

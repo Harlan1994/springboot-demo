@@ -5,13 +5,15 @@ import org.springframework.data.domain.Page;
 
 public interface IUserService {
 
-    User findById(Long id);
+    Integer insertUser(User user);
 
-    User findUserByUsername(String username);
+    User selectUserById(Long id);
 
-    Page<User> findByPage(Integer page, Integer size);
+    User selectUserByUsername(String username);
 
-    void update(User User);
+    Page<User> selectUsersByPage(Integer page, Integer size);
+
+    Integer updateUser(User User);
 
     void deleteById(Long id);
 
